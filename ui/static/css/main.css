@@ -1,0 +1,54 @@
+:root {
+    color-scheme: light;
+    --ac: 15.352% 0.0368 183.61;
+    --rounded-badge: 1.9rem;
+    --animation-btn: 0.25s;
+    --animation-input: .2s;
+    --btn-focus-scale: 0.95;
+    --border-btn: 1px;
+    --tab-border: 1px;
+    --tab-radius: 0.5rem;
+    --rounded-box: 0.25rem;
+    --rounded-btn: 0.25rem;
+    --padding-card: 20px;
+    --main-content-background: #f2f5f8;
+    --leftmenu-background: #fff;
+    --topbar-background: #fff
+}
+
+body {
+    font-family: var(--body-font-family);
+}
+
+.leftmenu-wrapper {
+    width: var(--leftbar-width);
+    transition: all .3s;
+    background: var(--leftmenu-background);
+    position: sticky;
+    bottom: 0;
+    top: 0;
+    height: 100vh;
+    width: 15rem;
+    border-inline-end-width: 1px;
+    --tw-border-opacity: 1;
+    border-color: var(--fallback-b2, oklch(var(--b2) / var(--tw-border-opacity)));
+}
+
+.main-wrapper {
+    width: 100%;
+    max-width: 100vw;
+    height: 100vh;
+    background: var(--main-content-background);
+}
+
+.topbar-wrapper {
+    background: var(--topbar-background);
+}
+
+.content-wrapper {
+    flex-grow: 1;
+    padding: 1.5rem;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+    transition-duration: .15s;
+}

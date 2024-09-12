@@ -1,0 +1,106 @@
+{{define "app-sidebar"}}
+<div class="leftmenu-wrapper">
+  <a class="flex h-16 items-center justify-center" href="/">
+    <span style="font-size: 2rem; font-weight: 300;font-style: italic;">Featify</span>
+  </a>
+  <div data-simplebar="init" class="h-[calc(100vh-64px)] lg:h-[calc(100vh-230px)]">
+    <div class="simplebar-wrapper" style="margin: 0px;">
+      <div class="simplebar-height-auto-observer-wrapper">
+        <div class="simplebar-height-auto-observer"></div>
+      </div>
+      <div class="simplebar-mask">
+        <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+          <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content"
+            style="height: 100%; overflow: hidden;">
+            <div class="simplebar-content" style="padding: 0px;">
+              <ul class="menu mb-6">
+                <li class="mb-0.5">
+                  <a class="" href="/">
+                    <div class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="18"
+                        width="1em" height="1em" viewBox="0 0 24 24">
+                        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                          stroke-width="2">
+                          <path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"></path>
+                          <path d="m12 15l5 6H7l5-6z"></path>
+                        </g>
+                      </svg>
+                      Dashboard
+                    </div>
+                  </a>
+                </li>
+                <li class="menu-title font-semibold">Projects</li>
+                <li class="mb-0.5">
+                  <details>
+                    <summary>
+                      <div class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg"
+                          xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="18"
+                          width="1em" height="1em" viewBox="0 0 24 24">
+                          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2">
+                            <path
+                              d="m2 7l4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8">
+                            </path>
+                            <path
+                              d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4M2 7h20m0 0v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63a.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63a.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63a.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63a.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7">
+                            </path>
+                          </g>
+                        </svg>Projects
+                      </div>
+                    </summary>
+                    <ul>
+                      <li class="mb-0.5">
+                        <a class="" href="/project/create">
+                          Create
+                        </a>
+                      </li>
+                      <li class="mb-0.5">
+                        <a class="" href="/project/view">
+                          View all
+                        </a>
+                      </li>
+                      <li class="mb-0.5">
+                        <a class="" href="/project/archived">
+                          Archived
+                        </a>
+                      </li>
+                    </ul>
+                  </details>
+                </li>
+                <li class="mb-0.5"><a class="" href="/apps/file-manager">
+                    <div class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="18"
+                        width="1em" height="1em" viewBox="0 0 24 24">
+                        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                          stroke-width="2">
+                          <rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect>
+                          <rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect>
+                          <path d="M6 6h.01M6 18h.01"></path>
+                        </g>
+                      </svg>Tasks
+                    </div>
+                  </a></li>
+
+                <li class="menu-title font-semibold">Other</li>
+                <li class="mb-0.5"><a class="" href="/docs/introduction">
+                    <div class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="18"
+                        width="1em" height="1em" viewBox="0 0 24 24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zm20 0h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7zM6 8h2m-2 4h2m8-4h2m-2 4h2">
+                        </path>
+                      </svg>Documentation</div>
+                  </a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+  </div>
+
+</div>
+{{end}}
