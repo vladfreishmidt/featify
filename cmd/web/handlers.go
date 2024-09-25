@@ -1,10 +1,13 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
+
+	"github.com/vladfreishmidt/featify/internal/models"
 )
 
 // dashboard handler.
@@ -41,7 +44,17 @@ func (app *application) projectView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "Display a specific project with ID: %d...\n", id)
+	project, err := app.projects.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+	fmt.Fprintf(w, "%+v", project)
 }
 
 // projectCreate handler.
@@ -52,5 +65,13 @@ func (app *application) projectCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte("Create a new project..."))
+	name := "Google Cloud"
+	description := "This is a test description for the Google Cloud project"
+
+	id, err := app.projects.Insert(name, description)
+	if err != nil {
+		app.serverError(w, err)
+	}
+
+	http.Redirect(w, r, fmt.Sprintf("/project/view?id=%d", id), http.StatusSeeOther)
 }

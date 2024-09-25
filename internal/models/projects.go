@@ -1,0 +1,58 @@
+package models
+
+import (
+	"database/sql"
+	"errors"
+	"time"
+)
+
+type Project struct {
+	ID          int
+	Name        string
+	Description string
+	Created     time.Time
+}
+
+type ProjectModel struct {
+	DB *sql.DB
+}
+
+func (m *ProjectModel) Insert(name string, description string) (int, error) {
+	stmt := `INSERT INTO projects (name, description, created)
+			VALUES(?, ?, UTC_TIMESTAMP())`
+
+	result, err := m.DB.Exec(stmt, name, description)
+	if err != nil {
+		return 0, err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+
+	return int(id), nil
+}
+
+func (m *ProjectModel) Get(id int) (*Project, error) {
+	stmt := `SELECT id, name, description, created FROM projects WHERE id = ?`
+
+	row := m.DB.QueryRow(stmt, id)
+
+	p := &Project{}
+
+	err := row.Scan(&p.ID, &p.Name, &p.Description, &p.Created)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrNoRecord
+		} else {
+			return nil, err
+		}
+	}
+
+	return p, nil
+}
+
+func (m *ProjectModel) Latest() ([]*Project, error) {
+	return nil, nil
+}
