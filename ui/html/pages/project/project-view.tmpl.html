@@ -1,0 +1,28 @@
+{{define "title"}}Project #{{.Project.ID}}{{end}}
+
+{{define "main"}}
+<div class="section">
+    {{with .Project}}
+    <div class="mt-6">
+        <div class="breadcrumbs text-sm">
+            <ul>
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="/projects">Projects</a></li>
+                <li>{{.Name}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="project">
+        <h1>
+            {{.Name}}
+        </h1>
+        <p>
+            {{.Description}}
+        </p>
+        <p>
+            {{.Created}}
+        </p>
+    </div>
+    {{end}}
+</div>
+{{end}}

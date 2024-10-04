@@ -1,4 +1,4 @@
-{{define "title"}}Dashboard{{end}}
+{{define "title"}}Projects{{end}}
 
 {{define "main"}}
 <div class="main-wrapper overflow-auto">
@@ -6,11 +6,18 @@
         <div class="content-wrapper">
             <div>
                 <div class="flex items-center justify-between">
-                    <h3 class="text-lg font-medium">Workspace Overview</h3>
+                    <div class="mt-6 flex gap-2 items-center">
+                        <h3 class="text-lg font-medium">Projects</h3>
+                        <button class="btn btn-outline btn-primary btn-sm">Create project</button>
+                    </div>
+                    <div class="breadcrumbs text-sm">
+                        <ul>
+                            <li><a href="/">Dashboard</a></li>
+                            <li>Projects</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="mt-6">
-                    <button class="btn btn-outline btn-primary">Create project</button>
-                </div> 
+
                 <div class="mt-6">
                     <div class="overflow-x-auto">
                         <table class="table">
@@ -46,7 +53,8 @@
                                             </div>
                                             <div>
                                                 <div class="font-bold">
-                                                    <a class="font-bold hover:underline" href="/project/view?id={{.ID}}">{{.Name}}</a>
+                                                    <a class="font-bold hover:underline"
+                                                        href="/project/view?id={{.ID}}">{{.Name}}</a>
                                                 </div>
                                                 <div class="text-sm opacity-50">id: #{{.ID}}</div>
                                             </div>

@@ -17,6 +17,12 @@ func (app *application) dashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	projects, err := app.projects.Latest()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
 	files := []string{
 		"./ui/html/base.tmpl.html",
 		"./ui/html/partials/app-sidebar.tmpl.html",
@@ -30,7 +36,11 @@ func (app *application) dashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = ts.ExecuteTemplate(w, "base", nil)
+	data := &templateData{
+		Projects: projects,
+	}
+
+	err = ts.ExecuteTemplate(w, "base", data)
 	if err != nil {
 		app.serverError(w, err)
 	}
@@ -54,7 +64,26 @@ func (app *application) projectView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "%+v", project)
+	files := []string{
+		"./ui/html/base.tmpl.html",
+		"./ui/html/partials/app-header.tmpl.html",
+		"./ui/html/partials/app-sidebar.tmpl.html",
+		"./ui/html/pages/project/project-view.tmpl.html",
+	}
+
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		app.serverError(w, err)
+	}
+
+	data := &templateData{
+		Project: project,
+	}
+
+	err = ts.ExecuteTemplate(w, "base", data)
+	if err != nil {
+		app.serverError(w, err)
+	}
 }
 
 // projectCreate handler.
@@ -74,4 +103,35 @@ func (app *application) projectCreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.Redirect(w, r, fmt.Sprintf("/project/view?id=%d", id), http.StatusSeeOther)
+}
+
+// projectList handler.
+func (app *application) projectList(w http.ResponseWriter, r *http.Request) {
+	projects, err := app.projects.GetAll()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	files := []string{
+		"./ui/html/base.tmpl.html",
+		"./ui/html/partials/app-sidebar.tmpl.html",
+		"./ui/html/partials/app-header.tmpl.html",
+		"./ui/html/pages/project/project-list.tmpl.html",
+	}
+
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	data := &templateData{
+		Projects: projects,
+	}
+
+	err = ts.ExecuteTemplate(w, "base", data)
+	if err != nil {
+		app.serverError(w, err)
+	}
 }

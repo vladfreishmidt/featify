@@ -54,5 +54,63 @@ func (m *ProjectModel) Get(id int) (*Project, error) {
 }
 
 func (m *ProjectModel) Latest() ([]*Project, error) {
-	return nil, nil
+	stmt := `SELECT id, name, description, created FROM projects
+		ORDER BY id DESC LIMIT 10`
+
+	rows, err := m.DB.Query(stmt)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	projects := []*Project{}
+
+	for rows.Next() {
+		p := &Project{}
+
+		err = rows.Scan(&p.ID, &p.Name, &p.Description, &p.Created)
+		if err != nil {
+			return nil, err
+		}
+
+		projects = append(projects, p)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return projects, nil
+}
+
+func (m *ProjectModel) GetAll() ([]*Project, error) {
+	stmt := `SELECT id, name, description, created FROM projects
+		ORDER BY id DESC`
+
+	rows, err := m.DB.Query(stmt)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	projects := []*Project{}
+
+	for rows.Next() {
+		p := &Project{}
+
+		err = rows.Scan(&p.ID, &p.Name, &p.Description, &p.Created)
+		if err != nil {
+			return nil, err
+		}
+
+		projects = append(projects, p)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return projects, nil
 }
