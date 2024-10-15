@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"html/template"
 	"net/http"
 	"strconv"
 
@@ -23,27 +22,7 @@ func (app *application) dashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	files := []string{
-		"./ui/html/base.tmpl.html",
-		"./ui/html/partials/app-sidebar.tmpl.html",
-		"./ui/html/partials/app-header.tmpl.html",
-		"./ui/html/pages/dashboard.tmpl.html",
-	}
-
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-
-	data := &templateData{
-		Projects: projects,
-	}
-
-	err = ts.ExecuteTemplate(w, "base", data)
-	if err != nil {
-		app.serverError(w, err)
-	}
+	app.render(w, http.StatusOK, "dashboard.tmpl.html", &templateData{Projects: projects})
 }
 
 // projectView handler.
@@ -64,26 +43,7 @@ func (app *application) projectView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	files := []string{
-		"./ui/html/base.tmpl.html",
-		"./ui/html/partials/app-header.tmpl.html",
-		"./ui/html/partials/app-sidebar.tmpl.html",
-		"./ui/html/pages/project/project-view.tmpl.html",
-	}
-
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serverError(w, err)
-	}
-
-	data := &templateData{
-		Project: project,
-	}
-
-	err = ts.ExecuteTemplate(w, "base", data)
-	if err != nil {
-		app.serverError(w, err)
-	}
+	app.render(w, http.StatusOK, "project-view.tmpl.html", &templateData{Project: project})
 }
 
 // projectCreate handler.
@@ -113,25 +73,5 @@ func (app *application) projectList(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	files := []string{
-		"./ui/html/base.tmpl.html",
-		"./ui/html/partials/app-sidebar.tmpl.html",
-		"./ui/html/partials/app-header.tmpl.html",
-		"./ui/html/pages/project/project-list.tmpl.html",
-	}
-
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-
-	data := &templateData{
-		Projects: projects,
-	}
-
-	err = ts.ExecuteTemplate(w, "base", data)
-	if err != nil {
-		app.serverError(w, err)
-	}
+	app.render(w, http.StatusOK, "project-list.tmpl.html", &templateData{Projects: projects})
 }
