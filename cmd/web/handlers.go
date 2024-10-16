@@ -22,7 +22,10 @@ func (app *application) dashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.render(w, http.StatusOK, "dashboard.tmpl.html", &templateData{Projects: projects})
+	data := app.newTemplateData(r)
+	data.Projects = projects
+
+	app.render(w, http.StatusOK, "dashboard.tmpl.html", data)
 }
 
 // projectView handler.
