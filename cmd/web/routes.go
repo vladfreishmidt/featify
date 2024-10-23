@@ -1,17 +1,29 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/julienschmidt/httprouter"
+	"github.com/justinas/alice"
+)
 
 func (app *application) routes() http.Handler {
-	mux := http.NewServeMux()
+	router := httprouter.New()
+
+	router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		app.notFound(w)
+	})
 
 	fileServer := http.FileServer(http.Dir("./ui/static"))
-	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
+	router.Handler(http.MethodGet, "/static/*filepath", http.StripPrefix("/static", fileServer))
 
-	mux.HandleFunc("/", app.dashboard)
-	mux.HandleFunc("/project/view", app.projectView)
-	mux.HandleFunc("/project/create", app.projectCreate)
-	mux.HandleFunc("/projects", app.projectList)
+	router.HandlerFunc(http.MethodGet, "/", app.dashboard)
+	router.HandlerFunc(http.MethodGet, "/project/view/:id", app.projectView)
+	router.HandlerFunc(http.MethodGet, "/project/create", app.projectCreate)
+	router.HandlerFunc(http.MethodPost, "/project/create", app.projectCreatePost)
+	router.HandlerFunc(http.MethodGet, "/projects", app.projectList)
 
-	return app.recoverPanic(app.logRequest(secureHeaders(mux)))
+	standard := alice.New(app.recoverPanic, app.logRequest, secureHeaders)
+
+	return standard.Then(router)
 }
