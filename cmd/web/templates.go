@@ -16,6 +16,7 @@ type templateData struct {
 	CurrentYear int
 	Project     *models.Project
 	Projects    []*models.Project
+	Form        any
 }
 
 func newTemplateCahce() (map[string]*template.Template, error) {

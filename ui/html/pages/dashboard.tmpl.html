@@ -1,7 +1,7 @@
 {{define "title"}}Dashboard{{end}}
 
 {{define "main"}}
-<div class="main-wrapper overflow-auto">
+<div class="main-wrapper overflow-auto bg-base-100">
     <div class="flex h-full flex-col">
         <div class="content-wrapper">
             <div>
@@ -46,7 +46,7 @@
                                             </div>
                                             <div>
                                                 <div class="font-bold">
-                                                    <a class="font-bold hover:underline" href="/project/view?id={{.ID}}">{{.Name}}</a>
+                                                    <a class="font-bold hover:underline" href="/project/view/{{.ID}}">{{.Name}}</a>
                                                 </div>
                                                 <div class="text-sm opacity-50">id: #{{.ID}}</div>
                                             </div>

@@ -4,76 +4,65 @@
 <div class="main-wrapper overflow-auto">
     <div class="flex h-full flex-col">
         <div class="content-wrapper">
-            <div>
-                <div class="flex items-center justify-between">
-                    <div class="mt-6 flex gap-2 items-center">
-                        <h3 class="text-lg font-medium">Projects</h3>
-                        <button class="btn btn-outline btn-primary btn-sm">Create project</button>
-                    </div>
-                    <div class="breadcrumbs text-sm">
-                        <ul>
-                            <li><a href="/">Dashboard</a></li>
-                            <li>Projects</li>
-                        </ul>
-                    </div>
+            <div class="flex items-center justify-between px-8 border-b">
+                <div class="flex gap-32 items-center py-4">
+                    <h3 class="text-lg font-medium">Projects</h3>
+                    <a href="/project/create" class="btn btn-ghost btn-sm uppercase text-primary">+ Create project</a>
+                    <a href="/project/archived" class="btn btn-ghost btn-sm uppercase text-primary">> Archived
+                        projects</a>
                 </div>
-
-                <div class="mt-6">
-                    <div class="overflow-x-auto">
-                        <table class="table">
-                            <!-- head -->
-                            <thead>
-                                <tr>
-                                    <th>
-                                        <label>
-                                            <input type="checkbox" class="checkbox" />
-                                        </label>
-                                    </th>
-                                    <th>Name</th>
-                                    <th>Date created</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{if .Projects}}
-                                {{range .Projects}}
-                                <tr>
-                                    <th>
-                                        <label>
-                                            <input type="checkbox" class="checkbox" />
-                                        </label>
-                                    </th>
-                                    <td>
-                                        <div class="flex items-center gap-3">
-                                            <div class="avatar">
-                                                <div class="mask h-12 w-12">
-                                                    <img src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/folder-blue-512.png"
-                                                        alt="Avatar Tailwind CSS Component" />
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="font-bold">
-                                                    <a class="font-bold hover:underline"
-                                                        href="/project/view?id={{.ID}}">{{.Name}}</a>
-                                                </div>
-                                                <div class="text-sm opacity-50">id: #{{.ID}}</div>
+            </div>
+            <div class="mt-6 px-8">
+                <div class="overflow-x-auto">
+                    <table class="table">
+                        <!-- head -->
+                        <thead class="bg-slate-100">
+                            <tr>
+                                <th>
+                                    <label>
+                                        <input type="checkbox" class="checkbox" />
+                                    </label>
+                                </th>
+                                <th class="text-slate-700">Name</th>
+                                <th class="text-slate-700">Date created</th>
+                                <th class="text-slate-700"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{if .Projects}}
+                            {{range .Projects}}
+                            <tr>
+                                <th>
+                                    <label>
+                                        <input type="checkbox" class="checkbox" />
+                                    </label>
+                                </th>
+                                <td>
+                                    <div class="flex items-center gap-3">
+                                        <div class="text-xl">
+                                            🗂️
+                                        </div>
+                                        <div>
+                                            <div class="font-bold">
+                                                <a class="font-bold underline"
+                                                    href="/project/view/{{.ID}}">{{.Name}}</a>
                                             </div>
                                         </div>
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-ghost badge-sm">{{humanDate .Created}}</span>
-                                    </td>
-                                    <th>
-                                        <a class="btn btn-ghost btn-xs" href="/project/view?id={{.ID}}">details</a>
-                                    </th>
-                                </tr>
-                                {{end}}
-                                {{else}}
-                                Nothing to see here yet...
-                                {{end}}
-                            </tbody>
-                        </table>
-                    </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge badge-ghost badge-sm">{{humanDate .Created}}</span>
+                                </td>
+                                <th>
+                                    <a class="btn btn-ghost btn-xs" href="/project/view/{{.ID}}">details</a>
+                                </th>
+                            </tr>
+                            {{end}}
+                            {{else}}
+                            Nothing to see here yet...
+                            {{end}}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

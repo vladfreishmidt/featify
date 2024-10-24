@@ -5,17 +5,21 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
+	"unicode/utf8"
 
+	"github.com/julienschmidt/httprouter"
 	"github.com/vladfreishmidt/featify/internal/models"
 )
 
+type projectCreateForm struct {
+	Name        string
+	Description string
+	FieldErrors map[string]string
+}
+
 // dashboard handler.
 func (app *application) dashboard(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		app.notFound(w)
-		return
-	}
-
 	projects, err := app.projects.Latest()
 	if err != nil {
 		app.serverError(w, err)
@@ -30,7 +34,9 @@ func (app *application) dashboard(w http.ResponseWriter, r *http.Request) {
 
 // projectView handler.
 func (app *application) projectView(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+	params := httprouter.ParamsFromContext(r.Context())
+
+	id, err := strconv.Atoi(params.ByName("id"))
 	if err != nil || id < 1 {
 		app.notFound(w)
 		return
@@ -50,22 +56,46 @@ func (app *application) projectView(w http.ResponseWriter, r *http.Request) {
 }
 
 // projectCreate handler.
-func (app *application) projectCreate(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		w.Header().Set("Allow", http.MethodPost)
-		app.clientError(w, http.StatusMethodNotAllowed)
+func (app *application) projectCreatePost(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
 		return
 	}
 
-	name := "Google Cloud"
-	description := "This is a test description for the Google Cloud project"
-
-	id, err := app.projects.Insert(name, description)
-	if err != nil {
-		app.serverError(w, err)
+	form := projectCreateForm{
+		Name:        r.PostForm.Get("name"),
+		Description: r.PostForm.Get("description"),
+		FieldErrors: map[string]string{},
 	}
 
-	http.Redirect(w, r, fmt.Sprintf("/project/view?id=%d", id), http.StatusSeeOther)
+	if strings.TrimSpace(form.Name) == "" {
+		form.FieldErrors["name"] = "This field cannot be blank"
+	} else if utf8.RuneCountInString(form.Name) > 100 {
+		form.FieldErrors["name"] = "This field cannot be more than 100 characters"
+	}
+
+	if len(form.FieldErrors) > 0 {
+		data := app.newTemplateData(r)
+		data.Form = form
+		app.render(w, http.StatusUnprocessableEntity, "project-create.tmpl.html", data)
+		return
+	}
+
+	id, err := app.projects.Insert(form.Name, form.Description)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	http.Redirect(w, r, fmt.Sprintf("/project/view/%d", id), http.StatusSeeOther)
+}
+
+// projectCreatePost handler.
+func (app *application) projectCreate(w http.ResponseWriter, r *http.Request) {
+	data := app.newTemplateData(r)
+
+	app.render(w, http.StatusOK, "project-create.tmpl.html", data)
 }
 
 // projectList handler.
