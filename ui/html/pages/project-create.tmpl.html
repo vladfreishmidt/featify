@@ -12,9 +12,11 @@
                 <span class="label-text font-medium">Project name<span class="text-amber-600">*</span></span>
                 <span class="label-text-alt">(required)</span>
             </div>
-            <input type="text" name="name" placeholder="eg. Random string generator" class="input input-bordered w-full" />
+            <input type="text" name="name" value="{{.Form.Name}}" placeholder="eg. Random string generator" class="input input-bordered w-full" {{with .Form.FieldErrors.name}}style="border-color: rgb(239 68 68)"{{end}}/>
             <div class="label">
-                <span class="label-text-alt">100 characters limit</span>
+                {{with .Form.FieldErrors.name}}
+                <span class="label-text-alt text-red-500">{{.}}</span>
+                {{end}}
             </div>
         </label>
         <label class="form-control w-full mb-6">
@@ -23,11 +25,11 @@
                 <span class="label-text-alt">(optional)</span>
             </div>
             <textarea name="description" placeholder="Project description"
-                class="textarea textarea-bordered textarea-md w-full resize-none px-4 py-2"></textarea>
+                class="textarea textarea-bordered textarea-md w-full resize-none px-4 py-2">{{.Form.Description}}</textarea>
         </label>
         <div class="flex gap-4 justify-end">
             <a class="btn btn-ghost btn-sm uppercase" href="/projects">Cancel</a>
-            <button class="btn btn-primary btn-sm uppercase">Create Project</button>
+            <button class="btn btn-sm uppercase">Create Project</button>
         </div>
     </form>
 </div>
