@@ -5,17 +5,16 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"strings"
-	"unicode/utf8"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/vladfreishmidt/featify/internal/models"
+	"github.com/vladfreishmidt/featify/internal/validator"
 )
 
 type projectCreateForm struct {
 	Name        string
 	Description string
-	FieldErrors map[string]string
+	validator.Validator
 }
 
 // dashboard handler.
@@ -66,16 +65,12 @@ func (app *application) projectCreatePost(w http.ResponseWriter, r *http.Request
 	form := projectCreateForm{
 		Name:        r.PostForm.Get("name"),
 		Description: r.PostForm.Get("description"),
-		FieldErrors: map[string]string{},
 	}
 
-	if strings.TrimSpace(form.Name) == "" {
-		form.FieldErrors["name"] = "This field cannot be blank"
-	} else if utf8.RuneCountInString(form.Name) > 100 {
-		form.FieldErrors["name"] = "This field cannot be more than 100 characters"
-	}
+	form.CheckField(validator.NotBlank(form.Name), "name", "This field cannot be blank")
+	form.CheckField(validator.MaxChars(form.Name, 100), "name", "This field cannot be more than 100 characters long")
 
-	if len(form.FieldErrors) > 0 {
+	if !form.Valid() {
 		data := app.newTemplateData(r)
 		data.Form = form
 		app.render(w, http.StatusUnprocessableEntity, "project-create.tmpl.html", data)
