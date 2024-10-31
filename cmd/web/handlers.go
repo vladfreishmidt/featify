@@ -12,9 +12,9 @@ import (
 )
 
 type projectCreateForm struct {
-	Name        string
-	Description string
-	validator.Validator
+	Name                string `form:"name"`
+	Description         string `form:"description"`
+	validator.Validator `form:"-"`
 }
 
 // dashboard handler.
@@ -56,15 +56,12 @@ func (app *application) projectView(w http.ResponseWriter, r *http.Request) {
 
 // projectCreatePost handler.
 func (app *application) projectCreatePost(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
+	var form projectCreateForm
+
+	err := app.decodePostForm(r, &form)
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
-	}
-
-	form := projectCreateForm{
-		Name:        r.PostForm.Get("name"),
-		Description: r.PostForm.Get("description"),
 	}
 
 	form.CheckField(validator.NotBlank(form.Name), "name", "This field cannot be blank")
