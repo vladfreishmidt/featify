@@ -17,6 +17,7 @@ type templateData struct {
 	Project     *models.Project
 	Projects    []*models.Project
 	Form        any
+	Flash       string
 }
 
 func newTemplateCahce() (map[string]*template.Template, error) {

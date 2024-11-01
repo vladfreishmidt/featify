@@ -51,7 +51,12 @@ func (app *application) projectView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.render(w, http.StatusOK, "project-view.tmpl.html", &templateData{Project: project})
+	flash := app.sessionManager.PopString(r.Context(), "flash")
+	data := app.newTemplateData(r)
+	data.Project = project
+	data.Flash = flash
+
+	app.render(w, http.StatusOK, "project-view.tmpl.html", data)
 }
 
 // projectCreatePost handler.
@@ -79,6 +84,8 @@ func (app *application) projectCreatePost(w http.ResponseWriter, r *http.Request
 		app.serverError(w, err)
 		return
 	}
+
+	app.sessionManager.Put(r.Context(), "flash", "Project successfully created!")
 
 	http.Redirect(w, r, fmt.Sprintf("/project/view/%d", id), http.StatusSeeOther)
 }

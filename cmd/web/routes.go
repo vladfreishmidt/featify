@@ -17,11 +17,13 @@ func (app *application) routes() http.Handler {
 	fileServer := http.FileServer(http.Dir("./ui/static"))
 	router.Handler(http.MethodGet, "/static/*filepath", http.StripPrefix("/static", fileServer))
 
-	router.HandlerFunc(http.MethodGet, "/", app.dashboard)
-	router.HandlerFunc(http.MethodGet, "/project/view/:id", app.projectView)
-	router.HandlerFunc(http.MethodGet, "/project/create", app.projectCreate)
-	router.HandlerFunc(http.MethodPost, "/project/create", app.projectCreatePost)
-	router.HandlerFunc(http.MethodGet, "/projects", app.projectList)
+	dynamic := alice.New(app.sessionManager.LoadAndSave)
+
+	router.Handler(http.MethodGet, "/", dynamic.ThenFunc(app.dashboard))
+	router.Handler(http.MethodGet, "/project/view/:id", dynamic.ThenFunc(app.projectView))
+	router.Handler(http.MethodGet, "/project/create", dynamic.ThenFunc(app.projectCreate))
+	router.Handler(http.MethodPost, "/project/create", dynamic.ThenFunc(app.projectCreatePost))
+	router.Handler(http.MethodGet, "/projects", dynamic.ThenFunc(app.projectList))
 
 	standard := alice.New(app.recoverPanic, app.logRequest, secureHeaders)
 
