@@ -4,13 +4,34 @@
 <div class="main-wrapper overflow-auto bg-base-100">
     <div class="flex h-full flex-col">
         <div class="content-wrapper">
-            <div>
+            <div class="px-6 mt-8">
                 <div class="flex items-center justify-between">
                     <h3 class="text-lg font-medium">Workspace Overview</h3>
                 </div>
                 <div class="mt-6">
                     <button class="btn btn-outline btn-primary">Create project</button>
-                </div> 
+                </div>
+                <div class="mt-06">
+                    <div class="stats shadow">
+                        <div class="stat place-items-center">
+                            <div class="stat-title">Downloads</div>
+                            <div class="stat-value">31K</div>
+                            <div class="stat-desc">From January 1st to February 1st</div>
+                        </div>
+
+                        <div class="stat place-items-center">
+                            <div class="stat-title">Users</div>
+                            <div class="stat-value text-secondary">4,200</div>
+                            <div class="stat-desc text-secondary">↗︎ 40 (2%)</div>
+                        </div>
+
+                        <div class="stat place-items-center">
+                            <div class="stat-title">New Registers</div>
+                            <div class="stat-value">1,200</div>
+                            <div class="stat-desc">↘︎ 90 (14%)</div>
+                        </div>
+                    </div>
+                </div>
                 <div class="mt-6">
                     <div class="overflow-x-auto">
                         <table class="table">
@@ -46,7 +67,8 @@
                                             </div>
                                             <div>
                                                 <div class="font-bold">
-                                                    <a class="font-bold hover:underline" href="/project/view/{{.ID}}">{{.Name}}</a>
+                                                    <a class="font-bold hover:underline"
+                                                        href="/project/view/{{.ID}}">{{.Name}}</a>
                                                 </div>
                                                 <div class="text-sm opacity-50">id: #{{.ID}}</div>
                                             </div>
