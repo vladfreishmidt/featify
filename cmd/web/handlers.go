@@ -51,10 +51,8 @@ func (app *application) projectView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	flash := app.sessionManager.PopString(r.Context(), "flash")
 	data := app.newTemplateData(r)
 	data.Project = project
-	data.Flash = flash
 
 	app.render(w, http.StatusOK, "project-view.tmpl.html", data)
 }

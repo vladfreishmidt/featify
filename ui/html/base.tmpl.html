@@ -18,6 +18,10 @@
                 {{template "app-header" .}}
             </header>
             <main class="h-full">
+                {{with .Flash}}
+                <div>Flash: {{.}}</div>
+                {{template "app-alert" .}}
+                {{end}}
                 {{template "main" .}}
             </main>
         </div>
