@@ -11,6 +11,7 @@
 </head>
 
 <body>
+    {{if eq .Authorized true}}
     <div class="app-wrapper flex">
         {{template "app-sidebar" .}}
         <div class="flex-1">
@@ -26,6 +27,11 @@
             </main>
         </div>
     </div>
+    {{else}}
+    <div class="signup-wrapper">
+        {{template "main" .}}
+    </div>
+    {{end}}
 </body>
 </html>
 {{end}}

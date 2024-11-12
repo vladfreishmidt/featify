@@ -18,6 +18,7 @@ type templateData struct {
 	Projects    []*models.Project
 	Form        any
 	Flash       string
+	Authorized  bool
 }
 
 func newTemplateCahce() (map[string]*template.Template, error) {
