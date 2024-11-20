@@ -10,6 +10,7 @@
     <div class="p-4">
       <h2>Sign up to Featify</h2>
       <form action="/user/signup" method="POST" novalidate>
+        <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
         <label class="input input-bordered flex items-center gap-2">
           {{with .Form.FieldErrors.name}}
           <label class="error">{{.}}</label>

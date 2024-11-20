@@ -7,6 +7,7 @@
         <p class="text-slate-500">Add your project name and description to proceed</p>
     </div>
     <form action="/project/create" method="POST" class="w-96">
+        <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
         <label class="form-control w-full mb-3">
             <div class="label">
                 <span class="label-text font-medium">Project name<span class="text-amber-600">*</span></span>
