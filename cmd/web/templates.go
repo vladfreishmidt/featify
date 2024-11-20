@@ -13,12 +13,12 @@ var functions = template.FuncMap{
 }
 
 type templateData struct {
-	CurrentYear int
-	Project     *models.Project
-	Projects    []*models.Project
-	Form        any
-	Flash       string
-	Authorized  bool
+	CurrentYear     int
+	Project         *models.Project
+	Projects        []*models.Project
+	Form            any
+	Flash           string
+	IsAuthenticated bool
 }
 
 func newTemplateCahce() (map[string]*template.Template, error) {

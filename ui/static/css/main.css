@@ -56,9 +56,9 @@ textarea::placeholder {
     transition-duration: .15s;
 }
 
-.signup-wrapper {
+/* .signup-wrapper {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-}
+} */
