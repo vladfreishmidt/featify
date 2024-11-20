@@ -30,6 +30,22 @@ type projectCreateForm struct {
 	validator.Validator `form:"-"`
 }
 
+// userLogoutPost handler
+func (app *application) userLogoutPost(w http.ResponseWriter, r *http.Request) {
+	err := app.sessionManager.RenewToken(r.Context())
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	// remove the authenticatedUserID from the session data to 'log out' the user
+	app.sessionManager.Remove(r.Context(), "authenticatedUserID")
+	app.sessionManager.Put(r.Context(), "flash", "You've been logged out successfully!")
+
+	// redirect the user to login page
+	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
+}
+
 // userSignup page handler
 func (app *application) userSignup(w http.ResponseWriter, r *http.Request) {
 	data := app.newTemplateData(r)
@@ -220,8 +236,4 @@ func (app *application) projectList(w http.ResponseWriter, r *http.Request) {
 	}
 
 	app.render(w, http.StatusOK, "project-list.tmpl.html", &templateData{Projects: projects})
-}
-
-func (app *application) userLogoutPost(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Logout the user...")
 }
