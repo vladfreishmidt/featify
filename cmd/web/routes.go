@@ -19,17 +19,21 @@ func (app *application) routes() http.Handler {
 
 	dynamic := alice.New(app.sessionManager.LoadAndSave)
 
-	router.Handler(http.MethodGet, "/", dynamic.ThenFunc(app.dashboard))
-	router.Handler(http.MethodGet, "/project/view/:id", dynamic.ThenFunc(app.projectView))
-	router.Handler(http.MethodGet, "/project/create", dynamic.ThenFunc(app.projectCreate))
-	router.Handler(http.MethodPost, "/project/create", dynamic.ThenFunc(app.projectCreatePost))
-	router.Handler(http.MethodGet, "/projects", dynamic.ThenFunc(app.projectList))
-
+	// unprotected
 	router.Handler(http.MethodGet, "/user/signup", dynamic.ThenFunc(app.userSignup))
 	router.Handler(http.MethodPost, "/user/signup", dynamic.ThenFunc(app.userSignupPost))
 	router.Handler(http.MethodGet, "/user/login", dynamic.ThenFunc(app.userLogin))
 	router.Handler(http.MethodPost, "/user/login", dynamic.ThenFunc(app.userLoginPost))
 	router.Handler(http.MethodPost, "/user/logout", dynamic.ThenFunc(app.userLogoutPost))
+
+	protected := dynamic.Append(app.requireAuthentication)
+
+	// authenticated-only
+	router.Handler(http.MethodGet, "/", protected.ThenFunc(app.dashboard))
+	router.Handler(http.MethodGet, "/project/view/:id", protected.ThenFunc(app.projectView))
+	router.Handler(http.MethodGet, "/project/create", protected.ThenFunc(app.projectCreate))
+	router.Handler(http.MethodPost, "/project/create", protected.ThenFunc(app.projectCreatePost))
+	router.Handler(http.MethodGet, "/projects", protected.ThenFunc(app.projectList))
 
 	standard := alice.New(app.recoverPanic, app.logRequest, secureHeaders)
 

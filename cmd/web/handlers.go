@@ -143,7 +143,7 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	app.sessionManager.Put(r.Context(), "authenticatedUserID", id)
-	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 // dashboard handler.
@@ -156,7 +156,6 @@ func (app *application) dashboard(w http.ResponseWriter, r *http.Request) {
 
 	data := app.newTemplateData(r)
 	data.Projects = projects
-	data.Authorized = true // replace with a session value
 
 	app.render(w, http.StatusOK, "dashboard.tmpl.html", data)
 }
