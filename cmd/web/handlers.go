@@ -236,3 +236,8 @@ func (app *application) projectList(w http.ResponseWriter, r *http.Request) {
 
 	app.render(w, http.StatusOK, "project-list.tmpl.html", &templateData{Projects: projects})
 }
+
+// ping
+func ping(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("OK"))
+}
